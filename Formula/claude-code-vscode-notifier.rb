@@ -1,9 +1,9 @@
 class ClaudeCodeVscodeNotifier < Formula
   desc "macOS notifications for Claude Code (VS Code) showing the actual last message"
   homepage "https://github.com/nicolasclaisse/claude-code-vscode-notifier"
-  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.1/ClaudeNotifier-v1.0.1-arm64.zip"
+  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.2/ClaudeNotifier-v1.0.2-arm64.zip"
   sha256 "d46c621d3876f29b0ef87eed3aed0f579133647f8e3d90b83e98a290583bdcb0"
-  version "1.0.1"
+  version "1.0.2"
   license "MIT"
 
   depends_on :macos
@@ -83,6 +83,14 @@ class ClaudeCodeVscodeNotifier < Formula
 
     (bin/"claude-notifier-hook").write(hook_script)
     chmod 0755, bin/"claude-notifier-hook"
+
+    # Signer le bundle pour que macOS affiche l'icône dans les notifications
+    system "codesign", "--sign", "-", "--force", "--deep", "#{prefix}/ClaudeNotifier.app"
+
+    # Symlink dans ~/Applications pour que Launch Services enregistre le bundle
+    apps_dir = Pathname.new(Dir.home)/"Applications"
+    apps_dir.mkpath
+    ln_sf "#{prefix}/ClaudeNotifier.app", apps_dir/"ClaudeNotifier.app"
   end
 
   def caveats
