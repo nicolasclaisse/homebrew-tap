@@ -5,7 +5,6 @@ class ClaudeCodeVscodeNotifier < Formula
   sha256 "7b05cdcd13ae2991d3af787e5129ad41759e3094225c1445c32bf324cda25aa5"
   license "MIT"
 
-  depends_on xcode: :build
   depends_on :macos
 
   def install
