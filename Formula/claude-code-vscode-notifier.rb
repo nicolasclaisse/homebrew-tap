@@ -1,17 +1,17 @@
 class ClaudeCodeVscodeNotifier < Formula
   desc "macOS notifications for Claude Code (VS Code) showing the actual last message"
   homepage "https://github.com/nicolasclaisse/claude-code-vscode-notifier"
-  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "7b05cdcd13ae2991d3af787e5129ad41759e3094225c1445c32bf324cda25aa5"
+  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.0/ClaudeNotifier-v1.0.0-arm64.zip"
+  sha256 "5f5411e46f0983ed3d6a71039008c741cf1b12c50f700e2bf30d72a0d55dd89c"
+  version "1.0.0"
   license "MIT"
 
   depends_on :macos
+  depends_on arch: :arm64
 
   def install
-    system "swiftc", "ClaudeNotifier/main.swift", "-o", "ClaudeNotifier"
     bin.install "ClaudeNotifier"
 
-    # Créer notify.sh avec le bon chemin vers le binaire
     hook_script = <<~BASH
       #!/bin/bash
 
@@ -54,12 +54,7 @@ class ClaudeCodeVscodeNotifier < Formula
 
   def caveats
     <<~EOS
-      Pour activer les notifications, exécute :
-
-        mkdir -p ~/.claude/hooks
-        cp #{bin}/claude-notifier-hook ~/.claude/hooks/notify.sh
-
-      Puis ajoute dans ~/.claude/settings.json :
+      Pour activer les notifications, ajoute dans ~/.claude/settings.json :
 
         {
           "hooks": {
