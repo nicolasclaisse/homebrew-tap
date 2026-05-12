@@ -1,21 +1,54 @@
 class ClaudeCodeVscodeNotifier < Formula
   desc "macOS notifications for Claude Code (VS Code) showing the actual last message"
   homepage "https://github.com/nicolasclaisse/claude-code-vscode-notifier"
-  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.0/ClaudeNotifier-v1.0.0-arm64.zip"
-  sha256 "5f5411e46f0983ed3d6a71039008c741cf1b12c50f700e2bf30d72a0d55dd89c"
-  version "1.0.0"
+  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.1/ClaudeNotifier-v1.0.1-arm64.zip"
+  sha256 "d46c621d3876f29b0ef87eed3aed0f579133647f8e3d90b83e98a290583bdcb0"
+  version "1.0.1"
   license "MIT"
 
   depends_on :macos
   depends_on arch: :arm64
 
   def install
-    bin.install "ClaudeNotifier"
+    # Construire le .app bundle
+    app_bundle = prefix/"ClaudeNotifier.app/Contents"
+    (app_bundle/"MacOS").mkpath
+    (app_bundle/"Resources").mkpath
+
+    (app_bundle/"MacOS").install "ClaudeNotifier"
+    (app_bundle/"Resources").install "AppIcon.icns"
+
+    (app_bundle/"Info.plist").write <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>CFBundleIdentifier</key>
+        <string>com.nicolasclaisse.claude-notifier</string>
+        <key>CFBundleName</key>
+        <string>Claude Code</string>
+        <key>CFBundleExecutable</key>
+        <string>ClaudeNotifier</string>
+        <key>CFBundleIconFile</key>
+        <string>AppIcon</string>
+        <key>CFBundleVersion</key>
+        <string>1</string>
+        <key>CFBundleShortVersionString</key>
+        <string>1.0.1</string>
+        <key>LSUIElement</key>
+        <true/>
+        <key>NSUserNotificationAlertStyle</key>
+        <string>alert</string>
+      </dict>
+      </plist>
+    XML
+
+    notifier_path = "#{prefix}/ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier"
 
     hook_script = <<~BASH
       #!/bin/bash
 
-      NOTIFIER="#{bin}/ClaudeNotifier"
+      NOTIFIER="#{prefix}/ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier"
       MSG="Claude a terminé"
 
       INPUT=$(cat)
@@ -70,7 +103,7 @@ class ClaudeCodeVscodeNotifier < Formula
   end
 
   test do
-    assert_predicate bin/"ClaudeNotifier", :exist?
+    assert_predicate prefix/"ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier", :exist?
     assert_predicate bin/"claude-notifier-hook", :exist?
   end
 end
