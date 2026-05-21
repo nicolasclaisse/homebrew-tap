@@ -1,8 +1,8 @@
 class Devdash < Formula
   desc "Web dashboard to launch and monitor a process-compose/nix dev environment"
   homepage "https://github.com/nicolasclaisse/devdash"
-  url "https://github.com/nicolasclaisse/devdash/archive/refs/tags/v0.6.7.tar.gz"
-  sha256 "bc230b32b68418a7b660c4947a9cddfe865be607249a916c2035b8e6befd23ac"
+  url "https://github.com/nicolasclaisse/devdash/archive/refs/tags/v0.6.8.tar.gz"
+  sha256 "13918979c9bdf4f3acf2b557a51f11c51bf1e07f5aabb227f129a3d1d3c68319"
   license "MIT"
 
   depends_on "node"
