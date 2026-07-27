@@ -6,8 +6,6 @@ class ClaudeCodeMessageNotifier < Formula
   sha256 "d46c621d3876f29b0ef87eed3aed0f579133647f8e3d90b83e98a290583bdcb0"
   license "MIT"
 
-  oldname "claude-code-vscode-notifier"
-
   depends_on arch: :arm64
   depends_on :macos
 
