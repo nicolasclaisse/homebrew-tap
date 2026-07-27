@@ -1,13 +1,15 @@
-class ClaudeCodeVscodeNotifier < Formula
-  desc "macOS notifications for Claude Code (VS Code) showing the actual last message"
-  homepage "https://github.com/nicolasclaisse/claude-code-vscode-notifier"
-  url "https://github.com/nicolasclaisse/claude-code-vscode-notifier/releases/download/v1.0.2/ClaudeNotifier-v1.0.2-arm64.zip"
-  sha256 "d46c621d3876f29b0ef87eed3aed0f579133647f8e3d90b83e98a290583bdcb0"
+class ClaudeCodeMessageNotifier < Formula
+  desc "macOS notifications for Claude Code showing the actual last message"
+  homepage "https://github.com/nicolasclaisse/claude-code-message-notifier"
+  url "https://github.com/nicolasclaisse/claude-code-message-notifier/releases/download/v1.0.2/ClaudeNotifier-v1.0.2-arm64.zip"
   version "1.0.2"
+  sha256 "d46c621d3876f29b0ef87eed3aed0f579133647f8e3d90b83e98a290583bdcb0"
   license "MIT"
 
-  depends_on :macos
+  oldname "claude-code-vscode-notifier"
+
   depends_on arch: :arm64
+  depends_on :macos
 
   def install
     # Construire le .app bundle
@@ -42,8 +44,6 @@ class ClaudeCodeVscodeNotifier < Formula
       </dict>
       </plist>
     XML
-
-    notifier_path = "#{prefix}/ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier"
 
     hook_script = <<~BASH
       #!/bin/bash
@@ -111,7 +111,7 @@ class ClaudeCodeVscodeNotifier < Formula
   end
 
   test do
-    assert_predicate prefix/"ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier", :exist?
-    assert_predicate bin/"claude-notifier-hook", :exist?
+    assert_path_exists prefix/"ClaudeNotifier.app/Contents/MacOS/ClaudeNotifier"
+    assert_path_exists bin/"claude-notifier-hook"
   end
 end
